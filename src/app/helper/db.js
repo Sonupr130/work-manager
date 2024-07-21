@@ -10,19 +10,19 @@ export const connectDb = async() => {
 
 
         console.log("Databse Connected! 🔥");
-        console.log(connection);
+        // console.log(connection);
         // console.log("Connected with host ", connection.host);
 
 
         // testing and creating user
-        const uuser = new User({
-            name: "test name",
-            email: "test@gmail.com",
-            password: "test233",
-            about: "this is simple testing"
-        });
-        await uuser.save();
-        console.log("User is Created");
+        // const uuser = new User({
+        //     name: "test name",
+        //     email: "test@gmail.com",
+        //     password: "test233",
+        //     about: "this is simple testing"
+        // });
+        // await uuser.save();
+        // console.log("User is Created");
     } catch (error) {
         console.log("Failed to connect with databse ❌");
         console.log(error);

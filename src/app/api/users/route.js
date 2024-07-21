@@ -1,64 +1,82 @@
 import { NextResponse } from "next/server";
 import { connectDb } from "../../helper/db";
+import { User } from "@/app/models/user";
 
 connectDb();
-export function GET(req, res){
-
-    const users = [{
-        name: "Sonu Pradhan",
-        phone: 123456789,
-        course: "Nodejs",
-    },{
-        name: "Amit Kumar",
-        phone: 123456789,
-        course: "React",
-    },{
-        name: "Sourav Mahto",
-        phone: 123456789,
-        course: "JavaScript",
-    },{
-        name: "Nisha Kumari",
-        phone: 123456789,
-        course: "TypeScript",
-    }];
-
-    return NextResponse.json(users);
-
-}
 
 
-export async function POST(request){
-
-    const body = request.body;
-    console.log(body);
-    // console.log(request.method);
-    // console.log(request.cookies);
-    // console.log(request.headers);
-    // console.log(request.nextUrl.pathname);
-    // console.log(request.nextUrl.searchParams);
 
 
-    // const jsonData = await request.json();
-    // console.log(jsonData);
 
-    const textData = await request.text();
-    console.log(textData);
 
+// CREATE USER API (http://localhost:3000/api/users)
+export async function POST(request) {
+  try {
+    // fetch user detail from request
+    const { name, email, password, about, profileURL } = await request.json();
+
+    // create user object with usermodel
+    const user = new User({
+      name,
+      email,
+      password,
+      about,
+      profileURL,
+    });
+
+    // save the object to the database
+    const createdUser = user.save();
+    const response = NextResponse.json(user, {
+      message: "User created successfully",
+      status: 200,
+    });
+    return response;
+
+  } catch (error) {
+    console.error(error);
     return NextResponse.json({
-        message: "Posting User data...",
-        status: 201,
-    })
+      message: "Failed to Create user",
+      status: false,
+    });
+  }
 }
 
 
-export function PUT(){}
 
 
-export function DELETE(req, res){
-    console.log("Deletd");
 
-    return NextResponse.json({
-        message: "Message deleted",
-        status: 200,
-    }, {status: 201, message: "Change text"})
+// GET ALL USER API (http://localhost:3000/api/users)
+export async function GET(req, res) {
+  
+
+    let users = [];
+    try {
+        // users = await User.find();
+        users = await User.find().select("-password");
+
+
+    } catch (error) {
+        console.log(error);
+        return NextResponse.json({
+            message: "Failed to fetch users",
+            status: false,
+        });
+    }
+
+  return NextResponse.json(users);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
