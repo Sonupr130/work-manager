@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 const Navbar = () => {
   return (
-    <nav className="flex justify-between items-center bg-blue-100 h-12 py-2 px-36 text-black">
+    <nav className="flex justify-between items-center bg-[#7E57C2] h-12 py-2 px-36 text-white">
       <div className="brand">
         <h1 className="text-2xl font-semibold">
           <a href="#!">Work Manager</a>
