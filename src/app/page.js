@@ -1,4 +1,6 @@
+import { connectDb } from "@/helper/db";
 
+connectDb();
 
 export const metadata = {
   title: "Work Manager",

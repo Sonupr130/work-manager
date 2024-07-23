@@ -1,9 +1,9 @@
-import { connectDb } from "@/app/helper/db";
-import { getResponseMessage } from "@/app/helper/responseMessage";
-import { Task } from "@/app/models/task";
+
+import { getResponseMessage } from "@/helper/responseMessage";
+import { Task } from "@/models/task";
 import { NextResponse } from "next/server";
 
-connectDb();
+
 
 // CREATE TASK API (http://localhost:3000/api/tasks)
 export async function POST(request){

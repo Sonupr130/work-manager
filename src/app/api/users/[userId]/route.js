@@ -1,4 +1,4 @@
-import { User } from "@/app/models/user";
+import { User } from "@/models/user";
 import { NextResponse } from "next/server";
 
 
