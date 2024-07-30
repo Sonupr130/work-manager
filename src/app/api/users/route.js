@@ -1,39 +1,43 @@
 import { User } from "@/models/user";
 import { NextResponse } from "next/server";
-
-
+import bcrypt from "bcryptjs";
 
 export async function POST(request) {
-  
-    // fetch user detail from request
-    const { name, email, password, about, profileURL } = await request.json();
+  // fetch user detail from request
+  const { name, email, password, about, profileURL } = await request.json();
+
+  // Check if user with the same email already exists
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    return NextResponse.json(
+      {
+        message: "User with this email already exists",
+        status: false,
+      },
+      { status: 409 }
+    );
+  }
+
+  // create user object with usermodel
+  const user = new User({
+    name,
+    email,
+    password,
+    about,
+    profileURL,
+  });
+
+  try {
 
 
-        // Check if user with the same email already exists
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-          return NextResponse.json(
-            {
-              message: "User with this email already exists",
-              status: false,
-            },
-            { status: 409 }
-          );
-        }
+    // to hash a password
+    user.password = bcrypt.hashSync(user.password, parseInt(process.env.BCRYPT_SALT));
 
-    // create user object with usermodel
-    const user = new User({
-      name,
-      email,
-      password,
-      about,
-      profileURL,
-    });
 
-    try {
+
 
     // save the object to the database
-    const createdUser = user.save();
+    const createdUser = await user.save();
     const response = NextResponse.json(user, {
       message: "User created successfully",
       status: 201,
@@ -46,7 +50,7 @@ export async function POST(request) {
         message: "Failed to Create user",
         status: false,
       },
-      { status: 500, }
+      { status: 500 }
     );
   }
 }
